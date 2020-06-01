@@ -1,0 +1,52 @@
+cacheservice:
+  port: 3000
+  workers: 1
+  redis:
+    host: ""
+    port: 6379
+    db: "cacheservice"
+
+replicaCount: 1
+
+image:
+  repository: 589295909756.dkr.ecr.us-east-2.amazonaws.com/cacheservice
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 3000
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+redis:
+  enabled: false
+  cluster:
+    enabled: false

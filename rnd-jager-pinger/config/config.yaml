@@ -1,0 +1,14 @@
+---
+  dataservice-host: http://dataservice
+  dataservice-port: 4000
+  frontend-host: http://web-one
+  frontend-port: 3000
+  loadbalancer-host: http://loadbalancer
+  loadbalancer-port: 2001
+  wrong-host: http://wrong
+  wrong-port: 4242
+
+  service-name: pinger
+
+  jaeger-host: jaeger
+  jaeger-port: 6831

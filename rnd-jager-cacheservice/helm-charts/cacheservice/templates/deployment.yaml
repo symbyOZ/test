@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cacheservice.fullname" . }}
+  labels:
+    {{- include "cacheservice.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cacheservice.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cacheservice.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "cacheservice.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.cacheservice.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: PORT
+              value: "{{ .Values.cacheservice.port }}"
+            - name: WORKERS
+              value: "{{ .Values.cacheservice.workers }}"
+            - name: REDIS_HOST
+            {{- if .Values.redis.enabled }}
+              value: "{{ template "cacheservice.fullname" . }}-redis-headless"
+            {{- else }}
+              value: "{{ .Values.cacheservice.redis.host }}"
+            {{- end }}
+            - name: REDIS_PORT
+            {{- if .Values.redis.enabled }}
+              value: "6379"
+            {{- else }}
+              value: "{{ .Values.cacheservice.redis.port }}"
+            {{- end }}
+            - name: REDIS_DB
+              value: "{{ .Values.cacheservice.redis.db }}"
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
