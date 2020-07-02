@@ -1,8 +1,0 @@
-image:
-  pullPolicy: Always
-imagePullSecrets:
-  - name: "ecr-docker-config"
-
-redis:
-  enabled: true
-  usePassword: false
