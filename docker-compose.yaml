@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    image: 224759732597.dkr.ecr.us-east-2.amazonaws.com/db
+    image: 565431345296.dkr.ecr.us-east-2.amazonaws.com/db
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
@@ -10,7 +10,7 @@ services:
       MYSQL_USER: root
       MYSQL_DATABASE: blog
   web-one:
-    image: 224759732597.dkr.ecr.us-east-2.amazonaws.com/web
+    image: 565431345296.dkr.ecr.us-east-2.amazonaws.com/web
     ports:
       - "3000:3000"
     environment:
@@ -26,11 +26,11 @@ services:
       - logservice
     command: -loadbalancer http://loadbalancer:2001 -logservice http://logservice:6000
   cacheservice:
-    image: 224759732597.dkr.ecr.us-east-2.amazonaws.com/cache
+    image: 565431345296.dkr.ecr.us-east-2.amazonaws.com/cache
     ports:
       - "5000:3000"
   dataservice:
-    image:  224759732597.dkr.ecr.us-east-2.amazonaws.com/data
+    image:  565431345296.dkr.ecr.us-east-2.amazonaws.com/data
     ports:
       - "4000:4000"
     environment:
@@ -44,7 +44,7 @@ services:
     depends_on:
       - db
   loadbalancer:
-    image: 224759732597.dkr.ecr.us-east-2.amazonaws.com/lb
+    image: 565431345296.dkr.ecr.us-east-2.amazonaws.com/lb
     ports:
       - "2000:2000"
       - "2001:2001"
@@ -59,11 +59,11 @@ services:
     depends_on:
       - logservice
   logservice:
-    image: 224759732597.dkr.ecr.us-east-2.amazonaws.com/ls
+    image: 565431345296.dkr.ecr.us-east-2.amazonaws.com/ls
     ports:
       - "6000:6000"
   pinger:
-    image: 224759732597.dkr.ecr.us-east-2.amazonaws.com/pinger
+    image: 565431345296.dkr.ecr.us-east-2.amazonaws.com/pinger
     ports:
       - "7000:7000"
   jaeger:
